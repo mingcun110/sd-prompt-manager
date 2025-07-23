@@ -1,0 +1,58 @@
+[project]
+name = "sd-prompt-manager"
+version = "0.1.0"
+description = "专业的 Stable Diffusion WebUI 提示词管理器，支持批量任务提交、提示词库管理和数据分析统计"
+readme = "README.md"
+authors = [
+    { name = "mingcun110", email = "mingcun110@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    # 核心依赖
+    "requests>=2.28.0",       # HTTP客户端，用于SD WebUI API调用
+    "pandas>=1.5.0",          # 数据处理和分析
+    "numpy>=1.21.0",          # 数值计算
+    "matplotlib>=3.5.0",      # 数据可视化
+    "plotly>=5.10.0",         # 交互式图表
+]
+
+[project.optional-dependencies]
+async = [
+    "aiohttp>=3.8.0",        # 异步HTTP客户端
+]
+database = [
+    "sqlalchemy>=1.4.0",     # 数据库ORM
+]
+dev = [
+    "pytest>=7.0.0",         # 单元测试
+    "black>=22.0.0",         # 代码格式化
+    "flake8>=5.0.0",         # 代码检查
+    "mypy>=0.991",           # 类型检查
+]
+
+# 应用程序脚本入口点
+[project.scripts]
+sd-prompt-manager = "src.prompt_manager:main"
+batch-action-generator = "batch_action_generator:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# 指定要打包的文件
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+# 工具配置
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
