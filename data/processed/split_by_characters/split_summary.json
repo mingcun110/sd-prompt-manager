@@ -1,14 +1,9 @@
 {
   "split_info": {
-    "input_files": [
-      "action.json",
-      "action_futanari.json",
-      "action_explicit.json"
-    ],
-    "total_actions": 817,
+    "total_actions": 923,
     "categories": {
+      "solo_girl": 406,
       "couple": 243,
-      "solo_girl": 300,
       "group": 44,
       "unknown": 76,
       "solo_boy": 30,
@@ -17,8 +12,8 @@
       "futanari": 58
     },
     "files": {
-      "couple": "action_couple.json",
       "solo_girl": "action_solo_girl.json",
+      "couple": "action_couple.json",
       "group": "action_group.json",
       "unknown": "action_unknown.json",
       "solo_boy": "action_solo_boy.json",
@@ -28,17 +23,17 @@
     }
   },
   "category_details": {
+    "solo_girl": {
+      "category": "solo_girl",
+      "description": "单个女性角色的动作",
+      "count": 406,
+      "filename": "action_solo_girl.json"
+    },
     "couple": {
       "category": "couple",
       "description": "一男一女的动作",
       "count": 243,
       "filename": "action_couple.json"
-    },
-    "solo_girl": {
-      "category": "solo_girl",
-      "description": "单个女性角色的动作",
-      "count": 300,
-      "filename": "action_solo_girl.json"
     },
     "group": {
       "category": "group",

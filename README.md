@@ -1,53 +1,187 @@
-# 🎨 WAI-NSFW 智能提示词库
+# 🎨 Stable Diffusion WebUI 提示词管理器
 
 ## 📊 项目概览
 
-**🚀 全新升级版本** - 现在包含 **923个高质量提示词**，采用 **3级风险分类系统**，确保在不同平台的安全使用！
+专业的提示词管理器，专门用于管理 Stable Diffusion WebUI 的绘图提示词。本项目实现了完整的提示词管理生态系统，包括批量任务提交、提示词库管理和数据分析功能。
 
-| 📈 统计指标 | 📊 数值 | 📝 说明 |
-|------------|---------|---------|
-| **总提示词数** | 923个 | 完整的内容库 |
-| **分类精度** | 90.7% | AI智能分类 |
-| **风险等级** | 3级 | 从艺术到成人 |
-| **角色类型** | 8种 | 全面覆盖 |
+## 🎯 核心功能
 
-## 🎯 主要特性
+### 1. 📋 批量任务提交
+以脚本形式实现多组提示词的批量提交，提高绘图任务执行效率。
+- **状态**: ✅ 已完全实现
+- **文件**: `batch_action_generator.py` (根目录，下载即用)
+- **特性**: 支持批量提示词处理、自动化任务队列管理、与 SD WebUI 集成
 
-### ✨ 3级内容分类系统
-- 🟢 **Level 1 - 视觉冲击** (54个): 艺术性强，适合所有平台
-- 🟡 **Level 2 - 诱惑内容** (52个): 暗示性强，适合限制平台  
-- 🔴 **Level 3 - 显性内容** (817个): 成人内容，仅限成人平台
+### 2. 🗄️ 提示词库管理
+构建完整的提示词数据库，支持词条的增加、删除、修改和查询操作。
+- **状态**: 🚧 规划中
+- **数据**: 923个分级提示词（Level 1-3），仅NSFW内容用于科学研究和代码测试
+- **特性**: 标准化数据格式、灵活的查询和过滤功能
 
-### 🤖 智能分类算法
-- **角色识别**: 自动识别角色数量和类型
-- **内容分析**: 智能分析内容风险等级
-- **批量处理**: 支持大规模内容处理
+### 3. 📊 数据分析与统计
+对提示词库进行深度分析，包括：
+- **状态**: 🔄 部分实现
+- **已有**: 角色识别和分类算法 (92.6% 精度)
+- **规划**: 类别统计分析、词频分析报告、使用趋势展示
 
-### 📁 专业文件组织
-- **标准化命名**: 统一的文件命名规范
-- **层级结构**: 清晰的目录层次
-- **备份系统**: 完整的legacy备份
+## 📁 项目结构
+
+```
+sd-prompt-manager/
+├── batch_action_generator.py   # 📋 功能1: SD WebUI 批量脚本 (下载即用)
+├── src/                        # 源代码目录
+│   ├── prompt_manager/         # 提示词库管理模块（规划中）
+│   └── data_analysis/          # 数据分析模块
+│       └── split_action_by_characters.py  # 角色识别脚本
+├── data/                       # 数据目录
+│   ├── raw/                   # 原始数据 (action_*.json)
+│   ├── level_1_visual/        # Level 1 - 视觉冲击 (54个)
+│   ├── level_2_seductive/     # Level 2 - 诱惑内容 (52个)
+│   ├── level_3_explicit/      # Level 3 - 显性内容 (817个)
+│   └── processed/             # 数据分析结果
+│       └── split_by_characters/  # 角色分类结果
+├── config/                     # 配置文件
+├── docs/                       # 文档目录
+│   ├── USER_GUIDE.md          # 完整使用指南
+│   └── DEVELOPMENT.md         # 开发文档
+└── scripts/                   # 实用脚本
+
+```
 
 ## 🚀 快速开始
 
-### 📥 立即使用
-```python
-# 🎨 获取安全的艺术创作提示词
-import json, random
+### 📋 功能1：批量任务提交（立即可用）
 
-with open('prompts/level_1_visual/prompts_visual_impact.json', 'r') as f:
+**一键使用步骤**：
+
+1. **下载脚本**
+   ```bash
+   # 下载批量脚本到本地
+   wget https://raw.githubusercontent.com/your-username/sd-prompt-manager/main/batch_action_generator.py
+   ```
+
+2. **安装到 SD WebUI**
+   ```bash
+   # 复制到您的 Stable Diffusion WebUI scripts 目录
+   cp batch_action_generator.py /path/to/stable-diffusion-webui/scripts/
+   ```
+
+3. **使用脚本**
+   - 重启 Stable Diffusion WebUI
+   - 在界面底部的 "Scripts" 下拉菜单中选择 "Batch Action Generator"
+   - 设置 JSON 文件路径：`data/raw/action_backup.json` (推荐，655+ 动作)
+   - 配置参数后点击 "Generate" 开始批量生成
+
+**推荐 JSON 文件路径**：
+- `data/raw/action_backup.json` - 通用批量生成 (655+ 动作)
+- `data/raw/action_visual_impact.json` - 艺术创作 (54 动作)
+- `data/raw/action_seductive.json` - 角色扮演 (52 动作)
+
+### 📊 功能3：数据分析（部分实现）
+
+```python
+# 角色识别分类
+cd sd-prompt-manager
+python src/data_analysis/split_action_by_characters.py
+
+# 查看分析结果
+ls data/processed/split_by_characters/
+```
+
+### 📥 使用提示词库
+```python
+import json
+import random
+
+# 加载 Level 1 安全提示词
+with open('data/level_1_visual/prompts_visual_impact.json', 'r') as f:
     visual_prompts = json.load(f)
 
 # 随机获取一个提示词
 prompt = random.choice(visual_prompts['actions'])
-print(f"🎨 推荐: {prompt['action']}")
+print(f"🎨 推荐提示词: {prompt['action']}")
 ```
 
-### 📚 完整文档
-- 📋 **[快速入门](QUICK_START_GUIDE.md)** - 60秒上手指南
-- 🔧 **[技术文档](COMPREHENSIVE_TECHNICAL_REPORT.md)** - 详细技术规范
-- 🚀 **[部署指南](DEPLOYMENT_CHECKLIST.md)** - 生产环境部署
-- 🔌 **[API文档](API_DOCUMENTATION.md)** - 接口规范说明
+## 🚀 快速开始
+
+### � 功能1：批量任务提交（已实现）
+
+```bash
+# 1. 复制脚本到 SD WebUI
+cp src/batch_submit/batch_action_generator.py /path/to/stable-diffusion-webui/scripts/
+
+# 2. 重启 WebUI，在 Scripts 中选择 "Batch Action Generator"
+
+# 3. 设置 JSON 文件路径
+# 推荐使用: data/raw/action_backup.json (655+ 动作)
+```
+
+### 📊 功能3：数据分析（部分实现）
+
+```python
+# 角色识别分类
+cd sd-prompt-manager
+python src/data_analysis/split_action_by_characters.py
+
+# 查看分析结果
+ls data/processed/split_by_characters/
+```
+
+### �📥 使用提示词库
+```python
+import json
+import random
+
+# 加载 Level 1 安全提示词
+with open('data/level_1_visual/prompts_visual_impact.json', 'r') as f:
+    visual_prompts = json.load(f)
+
+# 随机获取一个提示词
+prompt = random.choice(visual_prompts['actions'])
+print(f"🎨 推荐提示词: {prompt['action']}")
+```
+
+### � 数据分析示例
+```python
+## 📊 数据库概览
+
+### 多级别提示词库
+- **🟢 Level 1** - 视觉艺术 (54个提示词，适合所有平台)
+- **🟡 Level 2** - 诱惑内容 (52个提示词，适合限制平台)  
+- **🔴 Level 3** - 显性内容 (817个提示词，仅限成人平台，科研用途)
+
+### 智能分类系统  
+支持8种角色类别的自动识别和分类
+
+## 🛠️ 开发状态
+
+### ✅ 已实现功能
+- **数据分析模块**: 角色识别和分类算法 (`split_action_by_characters.py`)
+- **多级别提示词库**: 完整的分级数据体系
+- **项目结构**: 标准化的模块组织
+
+### 🚧 计划开发功能
+- **批量任务提交**: SD WebUI API 集成和任务调度
+- **提示词库管理**: CRUD操作和搜索引擎
+- **数据分析扩展**: 词频统计、趋势分析、可视化报告
+
+## 🤝 贡献指南
+
+我们欢迎社区贡献！请查看 [开发文档](docs/DEVELOPMENT.md) 了解详细的贡献流程。
+
+## ⚠️ 使用声明
+
+本项目包含的多级别提示词库（包括NSFW内容）仅用于科学研究和代码测试目的。我们不对使用本项目生成的任何内容承担责任。请用户根据所在地区的法律法规和使用场景合理选择合适级别的内容。
+
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 详情请查看 [LICENSE](LICENSE) 文件。
+
+---
+<div align="center">
+  <sub>专业的 Stable Diffusion WebUI 提示词管理解决方案</sub>
+</div>
+```
 
 ## 📊 内容统计
 
@@ -104,6 +238,7 @@ print(f"🎨 推荐: {prompt['action']}")
 2. **开发者**: 查看 [API文档](API_DOCUMENTATION.md)
 3. **运维**: 参考 [部署清单](DEPLOYMENT_CHECKLIST.md)
 4. **高级用户**: 研读 [技术报告](COMPREHENSIVE_TECHNICAL_REPORT.md)
+5. **项目报告**: 查看 [项目报告文档](docs/reports/) - 包含重组过程和优化详情
 
 ### 🚨 紧急支持
 - **内容问题**: 使用Level 1安全内容

@@ -406,27 +406,39 @@ def main():
     print("Action.json 人物数量分类工具")
     print("=" * 40)
     
-    # 检查输入文件
+    # 检查输入文件 - 更新路径到新的data/raw目录结构
     input_files = []
     
-    # 检查指定的文件
-    target_files = ["action.json", "action_futanari.json", "action_explicit.json"]
+    # 相对于脚本运行位置的路径（从项目根目录运行）
+    raw_data_dir = "data/raw"
     
-    for file_name in target_files:
-        if os.path.exists(file_name):
-            input_files.append(file_name)
-            print(f"✅ 找到 {file_name}")
-        else:
-            print(f"⚠️  未找到 {file_name}")
+    # 检查level目录下的JSON文件
+    level_dirs = ["level_1_visual", "level_2_seductive", "level_3_explicit"]
+    
+    for level_dir in level_dirs:
+        level_path = os.path.join(raw_data_dir, level_dir)
+        if os.path.exists(level_path):
+            # 查找该level目录下的JSON文件
+            for json_file in os.listdir(level_path):
+                if json_file.endswith('.json'):
+                    file_path = os.path.join(level_path, json_file)
+                    input_files.append(file_path)
+                    print(f"✅ 找到 {file_path}")
     
     if not input_files:
         print("❌ 错误: 没有找到任何目标文件")
+        print("请确保以下目录存在JSON文件:")
+        for level_dir in level_dirs:
+            print(f"  - {raw_data_dir}/{level_dir}/")
         return
     
     print(f"\n将处理以下文件: {', '.join(input_files)}")
     
+    # 输出到data/processed/split_by_characters目录
+    output_dir = "data/processed/split_by_characters"
+    
     try:
-        categories = split_action_json(input_files)
+        categories = split_action_json_from_levels(input_files, output_dir)
         
         # 分析未识别的动作
         if "unknown" in categories and categories["unknown"]:
@@ -434,8 +446,156 @@ def main():
             analyze_unknown_actions(categories["unknown"])
         
         print("\n✅ 分类完成!")
+        print(f"🗂️  分类结果保存在: {output_dir}")
     except Exception as e:
         print(f"\n❌ 错误: {e}")
+
+def split_action_json_from_levels(input_files, output_dir="split_actions"):
+    """
+    从level格式的JSON文件中提取并分类action数据
+    input_files: 输入文件列表（level格式的JSON文件）
+    """
+    # 合并所有输入文件的数据
+    action_data = {}
+    
+    for input_file in input_files:
+        if not os.path.exists(input_file):
+            print(f"警告: 文件 {input_file} 不存在，跳过...")
+            continue
+            
+        print(f"正在读取文件: {input_file}")
+        with open(input_file, 'r', encoding='utf-8') as f:
+            file_data = json.load(f)
+        
+        # 处理level格式的数据
+        if "actions" in file_data and isinstance(file_data["actions"], list):
+            # 新格式：{"actions": [{"action": "...", "characters": 1, "category": "..."}]}
+            for item in file_data["actions"]:
+                if "action" in item:
+                    action_name = f"level_action_{len(action_data)}"  # 生成唯一名称
+                    action_data[action_name] = item["action"]
+        else:
+            # 旧格式：{"action_name": "action_description"}
+            for key, value in file_data.items():
+                if key in action_data:
+                    print(f"警告: 发现重复的动作名称 '{key}'，将使用来自 {input_file} 的版本")
+                action_data[key] = value
+            
+        print(f"  从 {input_file} 读取了动作数据")
+    
+    print(f"\n总计合并了 {len(action_data)} 个动作")
+    
+    # 使用现有的分类逻辑
+    return split_action_data(action_data, output_dir)
+
+def split_action_data(action_data, output_dir):
+    """
+    对action数据进行分类处理
+    """
+    # 创建输出目录
+    Path(output_dir).mkdir(exist_ok=True)
+    
+    # 按类别分组
+    categories = defaultdict(dict)
+    
+    # 统计信息
+    stats = defaultdict(int)
+    
+    # 保存分析结果用于调试
+    analysis_results = []
+    
+    print("正在分析动作数据...")
+    for action_name, action_value in action_data.items():
+        # 跳过空值项（如 "random": ""）
+        if not action_value or action_value.strip() == "":
+            print(f"  跳过空值项: {action_name}")
+            continue
+            
+        girls_count, boys_count, category = analyze_character_count(action_value)
+        
+        # 添加到对应类别
+        categories[category][action_name] = action_value
+        stats[category] += 1
+        # 保存分析结果
+        analysis_results.append({
+            "name": action_name,
+            "value": action_value,
+            "girls_count": girls_count,
+            "boys_count": boys_count,
+            "category": category
+        })
+        
+        # 打印一些示例用于验证
+        if len(categories[category]) <= 3:
+            print(f"  {category}: {action_name} -> {action_value[:50]}...")
+    
+    # 输出统计信息
+    print("\n=== 分类统计 ===")
+    for category, count in sorted(stats.items()):
+        print(f"{category}: {count} 个动作")
+    
+    # 保存分类文件
+    print("\n正在保存分类文件...")
+    
+    # 创建文件名映射（更友好的文件名）
+    filename_mapping = {
+        "solo_girl": "action_solo_girl.json",
+        "solo_boy": "action_solo_boy.json", 
+        "couple": "action_couple.json",
+        "multiple_girls": "action_multiple_girls.json",
+        "multiple_boys": "action_multiple_boys.json",
+        "group": "action_group.json",
+        "mixed": "action_mixed.json",
+        "futanari": "action_futanari.json",
+        "unknown": "action_unknown.json"
+    }
+    
+    for category, actions in categories.items():
+        if not actions:  # 跳过空类别
+            continue
+            
+        filename = filename_mapping.get(category, f"action_{category}.json")
+        output_path = os.path.join(output_dir, filename)
+        
+        # 直接保存动作数据，不添加 _category_info
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(actions, f, ensure_ascii=False, indent=2)
+        
+        print(f"  保存 {filename}: {len(actions)} 个动作")
+    
+    # 保存详细分析结果
+    analysis_path = os.path.join(output_dir, "analysis_details.json")
+    with open(analysis_path, 'w', encoding='utf-8') as f:
+        json.dump(analysis_results, f, ensure_ascii=False, indent=2)
+    
+    # 创建一个总览文件，包含详细的分类信息
+    summary = {
+        "split_info": {
+            "total_actions": len(action_data),
+            "categories": dict(stats),
+            "files": {cat: filename_mapping.get(cat, f"action_{cat}.json") 
+                     for cat in categories.keys()}
+        },
+        "category_details": {
+            category: {
+                "category": category,
+                "description": get_category_description(category),
+                "count": len(actions),
+                "filename": filename_mapping.get(category, f"action_{category}.json")
+            }
+            for category, actions in categories.items() if actions
+        }
+    }
+    
+    summary_path = os.path.join(output_dir, "split_summary.json")
+    with open(summary_path, 'w', encoding='utf-8') as f:
+        json.dump(summary, f, ensure_ascii=False, indent=2)
+    
+    print(f"\n总览文件保存至: {summary_path}")
+    print(f"详细分析保存至: {analysis_path}")
+    print(f"所有分类文件保存在目录: {output_dir}")
+    
+    return categories
 
 if __name__ == "__main__":
     main()
