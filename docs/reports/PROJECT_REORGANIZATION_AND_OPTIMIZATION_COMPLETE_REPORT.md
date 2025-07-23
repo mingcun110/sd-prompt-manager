@@ -118,7 +118,6 @@ data/
 │   ├── level_2_seductive/      # 52个诱惑类提示词
 │   └── level_3_explicit/       # 817个显性内容类提示词
 └── processed/                  # 处理结果
-    ├── analysis_reports/       # 分析报告
     └── split_by_characters/    # 按角色分类结果
 ```
 

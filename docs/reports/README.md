@@ -11,12 +11,33 @@
   - 技术实现分析
   - 项目价值评估
 
+- [`PROJECT_OPTIMIZATION_COMPLETE_REPORT.md`](./PROJECT_OPTIMIZATION_COMPLETE_REPORT.md) - 项目优化完整报告
+  - 详细的优化过程记录
+  - 技术改进分析
+  - 性能提升评估
+
+- [`PROJECT_REORGANIZATION_REPORT.md`](./PROJECT_REORGANIZATION_REPORT.md) - 项目重组报告
+  - 项目结构调整记录
+  - 文件组织优化
+  - 代码架构重构
+
 ### 状态总结
 - [`PROJECT_OPTIMIZATION_SUMMARY.md`](./PROJECT_OPTIMIZATION_SUMMARY.md) - 项目优化完成总结
   - 任务完成状态概览
   - 文档结构优化说明
   - 组织结构优势分析
   - 后续维护建议
+
+### 专项分析报告
+- [`EXPLICIT_CONTENT_EXPANSION_REPORT.md`](./EXPLICIT_CONTENT_EXPANSION_REPORT.md) - 显式内容扩展分析报告
+  - 内容分类详细分析
+  - 数据处理结果总结
+  - 质量评估报告
+
+- [`VOCABULARY_MANAGEMENT_REPORT.md`](./VOCABULARY_MANAGEMENT_REPORT.md) - 词汇管理分析报告
+  - 词汇库管理策略
+  - 分类体系优化
+  - 数据质量评估
 
 ## 📊 报告类型说明
 

@@ -197,7 +197,7 @@ DATABASE_PATH = "data/"
 PROMPTS_DATABASE = "prompts/"
 
 # 分析配置
-ANALYSIS_OUTPUT_PATH = "analysis_reports/"
+ANALYSIS_OUTPUT_PATH = "docs/reports/"
 ```
 
 ### 环境变量
