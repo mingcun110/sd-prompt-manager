@@ -1,0 +1,80 @@
+{
+  "split_info": {
+    "input_files": [
+      "action.json",
+      "action_futanari.json",
+      "action_explicit.json"
+    ],
+    "total_actions": 817,
+    "categories": {
+      "couple": 243,
+      "solo_girl": 300,
+      "group": 44,
+      "unknown": 76,
+      "solo_boy": 30,
+      "multiple_boys": 25,
+      "multiple_girls": 40,
+      "futanari": 58
+    },
+    "files": {
+      "couple": "action_couple.json",
+      "solo_girl": "action_solo_girl.json",
+      "group": "action_group.json",
+      "unknown": "action_unknown.json",
+      "solo_boy": "action_solo_boy.json",
+      "multiple_boys": "action_multiple_boys.json",
+      "multiple_girls": "action_multiple_girls.json",
+      "futanari": "action_futanari.json"
+    }
+  },
+  "category_details": {
+    "couple": {
+      "category": "couple",
+      "description": "一男一女的动作",
+      "count": 243,
+      "filename": "action_couple.json"
+    },
+    "solo_girl": {
+      "category": "solo_girl",
+      "description": "单个女性角色的动作",
+      "count": 300,
+      "filename": "action_solo_girl.json"
+    },
+    "group": {
+      "category": "group",
+      "description": "群体动作（多人）",
+      "count": 44,
+      "filename": "action_group.json"
+    },
+    "unknown": {
+      "category": "unknown",
+      "description": "未能识别人物数量的动作",
+      "count": 76,
+      "filename": "action_unknown.json"
+    },
+    "solo_boy": {
+      "category": "solo_boy",
+      "description": "单个男性角色的动作",
+      "count": 30,
+      "filename": "action_solo_boy.json"
+    },
+    "multiple_boys": {
+      "category": "multiple_boys",
+      "description": "多个男性角色的动作",
+      "count": 25,
+      "filename": "action_multiple_boys.json"
+    },
+    "multiple_girls": {
+      "category": "multiple_girls",
+      "description": "多个女性角色的动作",
+      "count": 40,
+      "filename": "action_multiple_girls.json"
+    },
+    "futanari": {
+      "category": "futanari",
+      "description": "扶他相关动作",
+      "count": 58,
+      "filename": "action_futanari.json"
+    }
+  }
+}
