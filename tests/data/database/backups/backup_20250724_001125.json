@@ -1,0 +1,27 @@
+{
+  "prompts": [
+    {
+      "id": 1,
+      "name": "test_action_1",
+      "content": "1girl, solo, beautiful",
+      "level": "level_1_visual",
+      "tags": [
+        "solo_girl"
+      ],
+      "created_time": "2025-07-24T00:11:25.545084",
+      "updated_time": "2025-07-24T00:11:25.545094"
+    },
+    {
+      "id": 2,
+      "name": "test_action_2",
+      "content": "2girls, multiple girls, friendship",
+      "level": "level_1_visual",
+      "tags": [
+        "multiple_girls"
+      ],
+      "created_time": "2025-07-24T00:11:25.545278",
+      "updated_time": "2025-07-24T00:11:25.545282"
+    }
+  ],
+  "next_id": 3
+}
